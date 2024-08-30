@@ -1,13 +1,8 @@
 package userinfo
 
 import (
-	"os"
-	"path/filepath"
-	"strings"
-
-	"github.com/samber/lo"
-
 	"github.com/anhnmt/go-infostealer-parser/parser/model"
+	"github.com/anhnmt/go-infostealer-parser/parser/userinfo/meta"
 	"github.com/anhnmt/go-infostealer-parser/parser/util"
 )
 
@@ -19,26 +14,30 @@ func Extract(files []string, fn Parser) []*model.UserInformation {
 	}
 
 	results := make([]*model.UserInformation, 0)
-	lo.ForEach(files, func(file string, _ int) {
-		fileName := filepath.Base(file)
+	util.HandlerExtract(files, util.UserInformation, func(file string, body string) {
+		userInfo := fn(file, body)
+		if userInfo != nil {
+			results = append(results, userInfo)
+		}
+	})
 
-		lo.ForEach(util.UserInformation, func(item string, _ int) {
-			if !strings.EqualFold(fileName, item) {
-				return
-			}
+	return results
+}
 
-			// get file content
-			body, err := os.ReadFile(file)
-			if err != nil {
-				return
-			}
+func DetectStealer(files []string) []*model.UserInformation {
+	if len(files) == 0 {
+		return nil
+	}
 
-			userInfo := fn(file, string(body))
+	results := make([]*model.UserInformation, 0)
+	util.HandlerExtract(files, util.UserInformation, func(file string, body string) {
+		if util.GetMatchStealerHeader(util.MetaHeader, body) || util.GetMatchStealerHeader(util.RedlineHeader, body) {
+			userInfo := meta.ExtractUserInfo(file, body)
 			if userInfo != nil {
 				results = append(results, userInfo)
 			}
-
-		})
+			return
+		}
 	})
 
 	return results

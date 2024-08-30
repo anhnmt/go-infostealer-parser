@@ -44,9 +44,8 @@ func TestExtract(t *testing.T) {
 	// }
 
 	type args struct {
-		files     []string
-		fn        Parser
-		outputDir string
+		files []string
+		fn    Parser
 	}
 	tests := []struct {
 		name string
@@ -56,9 +55,8 @@ func TestExtract(t *testing.T) {
 		{
 			name: "Sample GODELESS CLOUD",
 			args: args{
-				files:     files,
-				fn:        meta.ExtractUserInfo,
-				outputDir: outputDir,
+				files: files,
+				fn:    meta.ExtractUserInfo,
 			},
 			want: 538,
 		},
@@ -76,6 +74,49 @@ func TestExtract(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := Extract(tt.args.files, tt.args.fn); tt.want != len(got) {
 				t.Errorf("Extract() = %d, want %d", len(got), tt.want)
+			}
+		})
+	}
+}
+
+func TestDetectStealer(t *testing.T) {
+	outputDir := "./testdata/GODELESS CLOUD"
+
+	// FOR EXAMPLE, WE REMOVE OLD DATA BEFORE EXTRACT.
+	err := os.RemoveAll(outputDir) // BE CAREFUL!
+	if err != nil {
+		t.Errorf("RemoveAll() error = %v", err)
+		return
+	}
+
+	files, err := extract.ExtractFile(
+		"./testdata/GODELESS CLOUD.rar",
+		outputDir,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	type args struct {
+		files []string
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "Sample GODELESS CLOUD",
+			args: args{
+				files: files,
+			},
+			want: 538,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := DetectStealer(tt.args.files); tt.want != len(got) {
+				t.Errorf("DetectStealer() = %v, want %v", len(got), tt.want)
 			}
 		})
 	}
