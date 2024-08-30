@@ -1,4 +1,4 @@
-package parser
+package extract
 
 import (
 	"path/filepath"

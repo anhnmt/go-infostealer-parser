@@ -8,11 +8,8 @@ import (
 	"github.com/samber/lo"
 
 	"github.com/anhnmt/go-infostealer-parser/parser/model"
+	"github.com/anhnmt/go-infostealer-parser/parser/util"
 )
-
-var UserInformation = []string{
-	"UserInformation.txt",
-}
 
 type Parser func(filePath, body string) *model.UserInformation
 
@@ -25,7 +22,7 @@ func Extract(files []string, fn Parser) []*model.UserInformation {
 	lo.ForEach(files, func(file string, _ int) {
 		fileName := filepath.Base(file)
 
-		lo.ForEach(UserInformation, func(item string, _ int) {
+		lo.ForEach(util.UserInformation, func(item string, _ int) {
 			if !strings.EqualFold(fileName, item) {
 				return
 			}

@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestExtractFile(t *testing.T) {
+func TestParseCredentials(t *testing.T) {
 	type args struct {
 		filePath  string
 		outputDir string
@@ -23,16 +23,7 @@ func TestExtractFile(t *testing.T) {
 				filePath:  "testdata/SAMPLE_EXTRACT.zip",
 				outputDir: "testdata/SAMPLE_EXTRACT",
 			},
-			want:    2,
-			wantErr: false,
-		},
-		{
-			name: "GODELESS CLOUD",
-			args: args{
-				filePath:  "testdata/GODELESS CLOUD.rar",
-				outputDir: "testdata/GODELESS CLOUD",
-			},
-			want:    6,
+			want:    3,
 			wantErr: false,
 		},
 	}
@@ -45,15 +36,13 @@ func TestExtractFile(t *testing.T) {
 				return
 			}
 
-			got, err := ExtractFile(tt.args.filePath, tt.args.outputDir, tt.args.passwords...)
+			got, err := ParseCredentials(tt.args.filePath, tt.args.outputDir, tt.args.passwords...)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("Extract() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("ParseCredentials() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-
-			l := len(got)
-			if l != tt.want {
-				t.Errorf("Extract() got(%d) = %v, want %v", l, got, tt.want)
+			if tt.want != len(got) {
+				t.Errorf("ParseCredentials() got = %v, want %v", len(got), tt.want)
 			}
 		})
 	}
