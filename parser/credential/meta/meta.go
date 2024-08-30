@@ -11,11 +11,18 @@ import (
 	"github.com/anhnmt/go-infostealer-parser/parser/util"
 )
 
+const (
+	URL         = "(URL|url):"
+	Username    = "(Username|username):"
+	Password    = "(Password|password):"
+	Application = "(Application|application):"
+)
+
 // ExtractCredentials extracts Credentials pattern from body
 func ExtractCredentials(filePath, body string) []*model.Credential {
 	entries := strings.Split(body, "===============")
 	if len(entries) == 0 {
-		return ExtractCredentialsPasswordFile(filePath, body)
+		return nil
 	}
 
 	credentials := make([]*model.Credential, 0)
@@ -82,54 +89,6 @@ func ExtractCredentials(filePath, body string) []*model.Credential {
 			credential.Username,
 			credential.Password,
 			credential.Application,
-		)
-	})
-
-	return credentials
-}
-
-func ExtractCredentialsPasswordFile(filePath, body string) []*model.Credential {
-	credentials := make([]*model.Credential, 0)
-	lines := strings.Split(body, "\n")
-	if len(lines) == 0 {
-		return nil
-	}
-
-	credential := &model.Credential{
-		OutputDir: filepath.Dir(filePath),
-	}
-
-	lo.ForEach(lines, func(line string, _ int) {
-		line = strings.TrimSpace(line)
-		if len(line) == 0 || strings.HasPrefix(line, "*") {
-			return
-		}
-
-		// Password File
-		matches := util.GetMatchSubString(PasswordFile, line)
-		if len(matches) != 4 {
-			return
-		}
-
-		url := util.GetGroupValue(matches, 1)
-		credential.URL = url
-		credential.Host = util.GetHostFromUrl(url)
-		credential.Username = util.GetGroupValue(matches, 2)
-		credential.Password = util.GetGroupValue(matches, 3)
-
-		// Validate
-		if !credential.Valid() {
-			return
-		}
-
-		credentials = append(credentials, credential)
-
-		fmt.Printf(
-			"host: %s\nurl: %s\nusername: %s\npassword: %s\n\n",
-			credential.Host,
-			credential.URL,
-			credential.Username,
-			credential.Password,
 		)
 	})
 

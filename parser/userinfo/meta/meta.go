@@ -12,6 +12,19 @@ import (
 	"github.com/anhnmt/go-infostealer-parser/parser/util"
 )
 
+const (
+	IP           string = "(IP|ip):"
+	FileLocation        = "(FileLocation):"
+	UserName            = "(UserName):"
+	MachineName         = "(MachineName):"
+	MachineID           = "(MachineID):"
+	Country             = "(Country):"
+	Location            = "(Location):"
+	HWID                = "(HWID):"
+	OS                  = "(Operation System):"
+	LogDate             = "(Log date):"
+)
+
 // ExtractUserInfo extracts UserInformation pattern from body
 func ExtractUserInfo(filePath, body string) *model.UserInformation {
 	lines := strings.Split(body, "\n")
