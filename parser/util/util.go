@@ -40,14 +40,6 @@ func GetMatchSubString(pattern, line string) []string {
 	return re.FindStringSubmatch(line)
 }
 
-func GetGroupValue(group []string, index int) string {
-	if index <= len(group)-1 {
-		return strings.TrimSpace(group[index])
-	}
-
-	return ""
-}
-
 func GetMatchStealerHeader(header, body string) bool {
 	flag := true
 	for _, line := range strings.Split(strings.TrimSpace(header), "\n") {
