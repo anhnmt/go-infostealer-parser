@@ -47,3 +47,45 @@ func TestParseCredentials(t *testing.T) {
 		})
 	}
 }
+
+func TestParseUserInfo(t *testing.T) {
+	type args struct {
+		filePath  string
+		outputDir string
+		passwords []string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    int
+		wantErr bool
+	}{
+		{
+			name: "Sample GODELESS CLOUD",
+			args: args{
+				filePath:  "testdata/GODELESS CLOUD.rar",
+				outputDir: "testdata/GODELESS CLOUD",
+			},
+			want: 538,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// FOR EXAMPLE, WE REMOVE OLD DATA BEFORE EXTRACT.
+			err := os.RemoveAll(tt.args.outputDir) // BE CAREFUL!
+			if err != nil {
+				t.Errorf("RemoveAll() error = %v", err)
+				return
+			}
+
+			got, err := ParseUserInfo(tt.args.filePath, tt.args.outputDir, tt.args.passwords...)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("ParseUserInfo() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if tt.want != len(got) {
+				t.Errorf("ParseUserInfo() got = %v, want %v", len(got), tt.want)
+			}
+		})
+	}
+}
