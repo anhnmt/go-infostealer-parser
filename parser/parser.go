@@ -10,7 +10,7 @@ import (
 )
 
 type Stealer struct {
-	UserInfos   []*model.UserInformation
+	UserInfo    *model.UserInformation
 	Credentials []*model.Credential
 }
 
@@ -36,11 +36,11 @@ func Parse(filePath, outputDir string, passwords ...string) (map[string]*Stealer
 			val, ok := results[group]
 			if !ok {
 				val = &Stealer{
-					UserInfos: slice,
+					UserInfo: slice[0],
 				}
 				results[group] = val
 			} else {
-				val.UserInfos = append(val.UserInfos, slice...)
+				val.UserInfo = slice[0]
 				results[group] = val
 			}
 		}
