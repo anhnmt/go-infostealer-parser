@@ -26,6 +26,14 @@ func TestParseCredentials(t *testing.T) {
 			want:    3,
 			wantErr: false,
 		},
+		{
+			name: "Sample GODELESS CLOUD",
+			args: args{
+				filePath:  "testdata/GODELESS CLOUD.rar",
+				outputDir: "testdata/GODELESS CLOUD",
+			},
+			want: 29647,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -85,6 +93,48 @@ func TestParseUserInfo(t *testing.T) {
 			}
 			if tt.want != len(got) {
 				t.Errorf("ParseUserInfo() got = %v, want %v", len(got), tt.want)
+			}
+		})
+	}
+}
+
+func TestParse(t *testing.T) {
+	type args struct {
+		filePath  string
+		outputDir string
+		passwords []string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    int
+		wantErr bool
+	}{
+		{
+			name: "Sample GODELESS CLOUD",
+			args: args{
+				filePath:  "testdata/GODELESS CLOUD.rar",
+				outputDir: "testdata/GODELESS CLOUD",
+			},
+			want: 538,
+		},
+	}
+	for _, tt := range tests {
+		// FOR EXAMPLE, WE REMOVE OLD DATA BEFORE EXTRACT.
+		err := os.RemoveAll(tt.args.outputDir) // BE CAREFUL!
+		if err != nil {
+			t.Errorf("RemoveAll() error = %v", err)
+			return
+		}
+
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := Parse(tt.args.filePath, tt.args.outputDir, tt.args.passwords...)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Parse() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if tt.want != len(got) {
+				t.Errorf("Parse() got = %v, want %v", len(got), tt.want)
 			}
 		})
 	}
