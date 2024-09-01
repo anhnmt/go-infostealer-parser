@@ -1,7 +1,6 @@
 package meta
 
 import (
-	"fmt"
 	"path/filepath"
 	"strings"
 	"time"
@@ -134,19 +133,19 @@ func ExtractUserInfo(filePath, body string) *model.UserInformation {
 		return nil
 	}
 
-	fmt.Printf(
-		"ip: %s\nfile_location: %s\nuser_name: %s\nmachine_name: %s\nmachine_id: %s\ncountry: %s\nlocation: %s\nhwid: %s\nos: %s\nlog_date: %s\n\n",
-		userInfo.IP,
-		userInfo.FileLocation,
-		userInfo.UserName,
-		userInfo.MachineName,
-		userInfo.MachineID,
-		userInfo.Country,
-		userInfo.Location,
-		userInfo.HWID,
-		userInfo.OS,
-		userInfo.LogDate,
-	)
+	// fmt.Printf(
+	// 	"ip: %s\nfile_location: %s\nuser_name: %s\nmachine_name: %s\nmachine_id: %s\ncountry: %s\nlocation: %s\nhwid: %s\nos: %s\nlog_date: %s\n\n",
+	// 	userInfo.IP,
+	// 	userInfo.FileLocation,
+	// 	userInfo.UserName,
+	// 	userInfo.MachineName,
+	// 	userInfo.MachineID,
+	// 	userInfo.Country,
+	// 	userInfo.Location,
+	// 	userInfo.HWID,
+	// 	userInfo.OS,
+	// 	userInfo.LogDate,
+	// )
 
 	return userInfo
 }
