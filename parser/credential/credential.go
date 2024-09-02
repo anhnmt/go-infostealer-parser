@@ -35,7 +35,9 @@ func DetectStealer(files []string) []*model.Credential {
 
 	results := make([]*model.Credential, 0)
 	util.HandlerExtract(files, util.Passwords, func(file string, body string) {
-		if util.GetMatchStealerHeader(util.MetaHeader, body) || util.GetMatchStealerHeader(util.RedlineHeader, body) {
+		if util.GetMatchStealerHeader(util.MetaHeader, body) ||
+			util.GetMatchStealerHeader(util.RedlineHeader, body) ||
+			util.GetMatchStealerHeader(util.BradMaxHeader, body) {
 			credentials := meta.ExtractCredentials(file, body)
 			if len(credentials) > 0 {
 				results = append(results, credentials...)

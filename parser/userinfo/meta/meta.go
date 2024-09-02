@@ -106,6 +106,12 @@ func ExtractUserInfo(filePath, body string) *model.UserInformation {
 				return
 			}
 
+			logDate, err = time.Parse("1/02/2006 15:04:05", val)
+			if err == nil {
+				userInfo.LogDate = &logDate
+				return
+			}
+
 			logDate, err = time.Parse("1/02/2006 15:04:05 PM", val)
 			if err == nil {
 				userInfo.LogDate = &logDate

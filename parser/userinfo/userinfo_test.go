@@ -80,7 +80,7 @@ func TestExtract(t *testing.T) {
 }
 
 func TestDetectStealer(t *testing.T) {
-	outputDir := "./testdata/GODELESS CLOUD"
+	outputDir := "testdata/@BRADMAX 1000 AUG"
 
 	// FOR EXAMPLE, WE REMOVE OLD DATA BEFORE EXTRACT.
 	err := os.RemoveAll(outputDir) // BE CAREFUL!
@@ -90,7 +90,7 @@ func TestDetectStealer(t *testing.T) {
 	}
 
 	files, err := extract.ExtractFile(
-		"./testdata/GODELESS CLOUD.rar",
+		"testdata/@BRADMAX 1000 AUG.zip",
 		outputDir,
 	)
 	if err != nil {
@@ -105,12 +105,19 @@ func TestDetectStealer(t *testing.T) {
 		args args
 		want int
 	}{
+		// {
+		//     name: "Sample GODELESS CLOUD",
+		//     args: args{
+		//         files: files,
+		//     },
+		//     want: 538,
+		// },
 		{
-			name: "Sample GODELESS CLOUD",
+			name: "Sample @BRADMAX 1000 AUG",
 			args: args{
 				files: files,
 			},
-			want: 538,
+			want: 1000,
 		},
 	}
 	for _, tt := range tests {

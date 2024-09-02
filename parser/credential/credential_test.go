@@ -9,7 +9,24 @@ import (
 )
 
 func TestExtract(t *testing.T) {
-	outputDir := "./testdata/GODELESS CLOUD"
+	// outputDir := "./testdata/GODELESS CLOUD"
+	//
+	// // FOR EXAMPLE, WE REMOVE OLD DATA BEFORE EXTRACT.
+	// err := os.RemoveAll(outputDir) // BE CAREFUL!
+	// if err != nil {
+	// 	t.Errorf("RemoveAll() error = %v", err)
+	// 	return
+	// }
+	//
+	// files, err := extract.ExtractFile(
+	// 	"./testdata/GODELESS CLOUD.rar",
+	// 	outputDir,
+	// )
+	// if err != nil {
+	// 	t.Fatal(err)
+	// }
+
+	outputDir := "testdata/@BRADMAX 1000 AUG"
 
 	// FOR EXAMPLE, WE REMOVE OLD DATA BEFORE EXTRACT.
 	err := os.RemoveAll(outputDir) // BE CAREFUL!
@@ -19,7 +36,7 @@ func TestExtract(t *testing.T) {
 	}
 
 	files, err := extract.ExtractFile(
-		"./testdata/GODELESS CLOUD.rar",
+		"testdata/@BRADMAX 1000 AUG.zip",
 		outputDir,
 	)
 	if err != nil {
@@ -53,14 +70,23 @@ func TestExtract(t *testing.T) {
 		args args
 		want int
 	}{
+		// {
+		//     name: "Sample GODELESS CLOUD",
+		//     args: args{
+		//         files:     files,
+		//         fn:        meta.ExtractCredentials,
+		//         outputDir: outputDir,
+		//     },
+		//     want: 28017,
+		// },
 		{
-			name: "Sample GODELESS CLOUD",
+			name: "Sample @BRADMAX 1000 AUG",
 			args: args{
 				files:     files,
 				fn:        meta.ExtractCredentials,
 				outputDir: outputDir,
 			},
-			want: 28017,
+			want: 76461,
 		},
 		// {
 		//     name: "Sample berserklogs",
