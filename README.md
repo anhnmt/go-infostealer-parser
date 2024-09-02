@@ -18,6 +18,10 @@ go get -u github.com/anhnmt/go-infostealer-parser
   - REDLINE
   
     ![REDLINE.png](docs/images/REDLINE.png)
+  
+  - BRADMAX
+  
+    ![BRADMAX.png](docs/images/BRADMAX.png)
 
 ## References
 
