@@ -53,12 +53,20 @@ func ExtractCredentials(filePath, body string) []*model.Credential {
 
 			// Username
 			if val := util.GetMatchString(Username, line); val != "" {
+				if !util.ValidString(val) {
+					return
+				}
+
 				credential.Username = val
 				return
 			}
 
 			// Password
 			if val := util.GetMatchString(Password, line); val != "" {
+				if !util.ValidString(val) {
+					return
+				}
+
 				credential.Password = val
 				return
 			}

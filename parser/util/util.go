@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"unicode"
 
 	"github.com/samber/lo"
 )
@@ -76,8 +77,18 @@ func HandlerExtract(files []string, whitelist []string, fn func(string, string))
 
 func TrimString(body string) string {
 	body = strings.ToValidUTF8(body, "")
-	body = strings.ReplaceAll(body, "\u200F", "")
+	body = strings.Map(func(r rune) rune {
+		if unicode.IsPrint(r) {
+			return r
+		}
+		return -1
+	}, body)
 	body = strings.TrimSpace(body)
 
 	return body
+}
+
+func ValidString(body string) bool {
+	re := regexp.MustCompile("^[\\w._%+\\\\\\-@\\*#$^!&(),\\/\\[\\]~\\`|{}?<>=:;'\" ]+$")
+	return re.MatchString(body)
 }
