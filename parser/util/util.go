@@ -68,7 +68,16 @@ func HandlerExtract(files []string, whitelist []string, fn func(string, string))
 				return
 			}
 
-			fn(file, string(contents))
+			body := string(contents)
+			fn(file, body)
 		})
 	})
+}
+
+func TrimString(body string) string {
+	body = strings.ToValidUTF8(body, "")
+	body = strings.ReplaceAll(body, "\u200F", "")
+	body = strings.TrimSpace(body)
+
+	return body
 }

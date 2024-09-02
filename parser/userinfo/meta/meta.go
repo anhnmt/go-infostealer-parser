@@ -36,7 +36,7 @@ func ExtractUserInfo(filePath, body string) *model.UserInformation {
 	}
 
 	lo.ForEach(lines, func(line string, _ int) {
-		line = strings.TrimSpace(line)
+		line = util.TrimString(line)
 		if len(line) == 0 ||
 			strings.HasPrefix(line, "*") ||
 			strings.HasPrefix(line, "http") {
