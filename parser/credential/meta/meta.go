@@ -46,6 +46,10 @@ func ExtractCredentials(filePath, body string) []*model.Credential {
 
 			// URL
 			if val := util.GetMatchString(URL, line); val != "" {
+				if !util.ValidString(val) {
+					return
+				}
+
 				credential.URL = val
 				credential.Host = util.GetHostFromUrl(val)
 				return
