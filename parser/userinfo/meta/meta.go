@@ -18,7 +18,7 @@ const (
 	MachineName         = "(MachineName):"
 	MachineID           = "(MachineID):"
 	Country             = "(Country):"
-	Location            = "(Location):"
+	Location            = "^(Location):"
 	HWID                = "(HWID):"
 	OS                  = "(Operation System):"
 	LogDate             = "(Log date):"

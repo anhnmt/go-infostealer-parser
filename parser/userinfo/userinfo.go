@@ -33,7 +33,8 @@ func DetectStealer(files []string) []*model.UserInformation {
 	util.HandlerExtract(files, util.UserInformation, func(file string, body string) {
 		if util.GetMatchStealerHeader(util.MetaHeader, body) ||
 			util.GetMatchStealerHeader(util.RedlineHeader, body) ||
-			util.GetMatchStealerHeader(util.BradMaxHeader, body) {
+			util.GetMatchStealerHeader(util.BradMaxHeader, body) ||
+			util.GetMatchStealerHeader(util.ManticoreHeader, body) {
 			userInfo := meta.ExtractUserInfo(file, body)
 			if userInfo != nil {
 				results = append(results, userInfo)

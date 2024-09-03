@@ -34,6 +34,14 @@ func TestParseCredentials(t *testing.T) {
 			},
 			want: 29647,
 		},
+		{
+			name: "Sample MANTICORECLOUD",
+			args: args{
+				filePath:  "testdata/@MANTICORECLOUD - 14.08 - 3800 PCS.rar",
+				outputDir: "testdata/@MANTICORECLOUD - 14.08 - 3800 PCS",
+			},
+			want: 3783,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -75,6 +83,14 @@ func TestParseUserInfo(t *testing.T) {
 				outputDir: "testdata/GODELESS CLOUD",
 			},
 			want: 538,
+		},
+		{
+			name: "Sample MANTICORECLOUD",
+			args: args{
+				filePath:  "testdata/@MANTICORECLOUD - 14.08 - 3800 PCS.rar",
+				outputDir: "testdata/@MANTICORECLOUD - 14.08 - 3800 PCS",
+			},
+			want: 247100,
 		},
 	}
 	for _, tt := range tests {

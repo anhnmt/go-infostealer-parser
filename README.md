@@ -22,6 +22,10 @@ go get -u github.com/anhnmt/go-infostealer-parser
   - BRADMAX
   
     ![BRADMAX.png](docs/images/BRADMAX.png)
+  
+  - MANTICORE
+  
+    ![MANTICORE.png](docs/images/MANTICORE.png)
 
 ## References
 
