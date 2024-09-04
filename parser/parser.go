@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"github.com/puzpuzpuz/xsync/v3"
 	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
 	"golang.org/x/sync/errgroup"
@@ -16,7 +17,7 @@ type InfoStealer struct {
 	Credentials []*model.Credential
 }
 
-func Parse(filePath, outputDir string, passwords ...string) (map[string]*InfoStealer, error) {
+func Parse(filePath, outputDir string, passwords ...string) (*xsync.MapOf[string, *InfoStealer], error) {
 	files, err := extract.ExtractFile(filePath, outputDir, passwords...)
 	if err != nil {
 		return nil, err
@@ -26,7 +27,7 @@ func Parse(filePath, outputDir string, passwords ...string) (map[string]*InfoSte
 		return nil, nil
 	}
 
-	results := make(map[string]*InfoStealer)
+	results := xsync.NewMapOf[string, *InfoStealer]()
 	chunkCh := make(chan []string, 100)
 	maxWorkers := 10
 	g := errgroup.Group{}
@@ -46,15 +47,15 @@ func Parse(filePath, outputDir string, passwords ...string) (map[string]*InfoSte
 							continue
 						}
 
-						val, ok := results[group]
+						val, ok := results.Load(group)
 						if !ok {
 							val = &InfoStealer{
 								UserInfo: slice[0],
 							}
-							results[group] = val
+							results.Store(group, val)
 						} else {
 							val.UserInfo = slice[0]
-							results[group] = val
+							results.Store(group, val)
 						}
 					}
 				}
@@ -70,15 +71,15 @@ func Parse(filePath, outputDir string, passwords ...string) (map[string]*InfoSte
 							continue
 						}
 
-						val, ok := results[group]
+						val, ok := results.Load(group)
 						if !ok {
 							val = &InfoStealer{
 								Credentials: slice,
 							}
-							results[group] = val
+							results.Store(group, val)
 						} else {
 							val.Credentials = append(val.Credentials, slice...)
-							results[group] = val
+							results.Store(group, val)
 						}
 					}
 				}

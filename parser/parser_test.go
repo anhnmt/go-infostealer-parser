@@ -149,8 +149,8 @@ func TestParse(t *testing.T) {
 				t.Errorf("Parse() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if tt.want != len(got) {
-				t.Errorf("Parse() got = %v, want %v", len(got), tt.want)
+			if tt.want != got.Size() {
+				t.Errorf("Parse() got = %v, want %v", got.Size(), tt.want)
 			}
 		})
 	}

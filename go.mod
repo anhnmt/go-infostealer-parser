@@ -4,6 +4,7 @@ go 1.23
 
 require (
 	github.com/go-playground/validator/v10 v10.22.0
+	github.com/puzpuzpuz/xsync/v3 v3.4.0
 	github.com/samber/lo v1.47.0
 	golang.org/x/sync v0.8.0
 	golift.io/xtractr v0.2.2
