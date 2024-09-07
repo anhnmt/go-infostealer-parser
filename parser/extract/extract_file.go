@@ -9,23 +9,15 @@ import (
 )
 
 func ExtractFile(filePath, outputDir string, passwords ...string) ([]string, error) {
-	files, err := ExtractFileWithoutFilter(filePath, outputDir, passwords...)
-	if err != nil {
-		return nil, err
-	}
-
-	if len(files) == 0 {
-		return nil, nil
-	}
-
-	return util.FilterWhitelistFiles(files), err
+	return ExtractFileWithFilter(filePath, outputDir, passwords, util.WhitelistFiles...)
 }
 
-func ExtractFileWithoutFilter(filePath, outputDir string, passwords ...string) ([]string, error) {
+func ExtractFileWithFilter(filePath, outputDir string, passwords []string, filters ...string) ([]string, error) {
 	x := &xtractr.XFile{
 		FilePath:  filepath.Clean(filePath),
 		OutputDir: filepath.Clean(outputDir), // do not forget this.
 		Passwords: passwords,
+		Includes:  filters,
 	}
 
 	// size is how many bytes were written.

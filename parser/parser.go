@@ -12,7 +12,7 @@ import (
 	"github.com/anhnmt/go-infostealer-parser/parser/userinfo"
 )
 
-var MaxWorkers = 3
+var MaxWorkers = 5
 
 type InfoStealer struct {
 	UserInfo    *model.UserInformation

@@ -10,17 +10,6 @@ import (
 	"github.com/samber/lo"
 )
 
-// FilterWhitelistFiles returns files that match whitelist
-func FilterWhitelistFiles(files []string) []string {
-	return lo.Filter(files, func(file string, _ int) bool {
-		fileName := filepath.Base(file)
-
-		return lo.ContainsBy(WhitelistFiles, func(item string) bool {
-			return strings.EqualFold(item, fileName)
-		})
-	})
-}
-
 // GetMatchString returns matched string
 func GetMatchString(pattern, line string) string {
 	re := regexp.MustCompile(pattern)
