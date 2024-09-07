@@ -87,8 +87,8 @@ func TestParseUserInfo(t *testing.T) {
 		{
 			name: "Sample MANTICORECLOUD",
 			args: args{
-				filePath:  "testdata/@MANTICORECLOUD - 14.08 - 3800 PCS.rar",
-				outputDir: "testdata/@MANTICORECLOUD - 14.08 - 3800 PCS",
+				filePath:  "testdata/@MANTICORECLOUD - 06.09 - 3500 PCS.rar",
+				outputDir: "testdata/@MANTICORECLOUD - 06.09 - 3500 PCS",
 			},
 			want: 247100,
 		},
@@ -126,13 +126,21 @@ func TestParse(t *testing.T) {
 		want    int
 		wantErr bool
 	}{
+		// {
+		//     name: "Sample GODELESS CLOUD",
+		//     args: args{
+		//         filePath:  "testdata/GODELESS CLOUD.rar",
+		//         outputDir: "testdata/GODELESS CLOUD",
+		//     },
+		//     want: 538,
+		// },
 		{
-			name: "Sample GODELESS CLOUD",
+			name: "Sample MANTICORECLOUD",
 			args: args{
-				filePath:  "testdata/GODELESS CLOUD.rar",
-				outputDir: "testdata/GODELESS CLOUD",
+				filePath:  "testdata/@MANTICORECLOUD - 06.09 - 3500 PCS.rar",
+				outputDir: "testdata/@MANTICORECLOUD - 06.09 - 3500 PCS",
 			},
-			want: 538,
+			want: 247100,
 		},
 	}
 	for _, tt := range tests {

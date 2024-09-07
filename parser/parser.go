@@ -12,6 +12,8 @@ import (
 	"github.com/anhnmt/go-infostealer-parser/parser/userinfo"
 )
 
+var MaxWorkers = 3
+
 type InfoStealer struct {
 	UserInfo    *model.UserInformation
 	Credentials []*model.Credential
@@ -29,11 +31,10 @@ func Parse(filePath, outputDir string, passwords ...string) (*xsync.MapOf[string
 
 	results := xsync.NewMapOf[string, *InfoStealer]()
 	chunkCh := make(chan []string, 100)
-	maxWorkers := 10
 	g := errgroup.Group{}
-	g.SetLimit(maxWorkers)
+	g.SetLimit(MaxWorkers)
 
-	for range maxWorkers {
+	for range MaxWorkers {
 		g.Go(func() error {
 			for chunks := range chunkCh {
 				userInfos := userinfo.DetectStealer(chunks)
@@ -116,11 +117,10 @@ func ParseCredentials(filePath, outputDir string, passwords ...string) ([]*model
 func ParseCredentialsFromFiles(files ...string) ([]*model.Credential, error) {
 	results := make([]*model.Credential, 0)
 	chunkCh := make(chan []string, 100)
-	maxWorkers := 10
 	g := errgroup.Group{}
-	g.SetLimit(maxWorkers)
+	g.SetLimit(MaxWorkers)
 
-	for range maxWorkers {
+	for range MaxWorkers {
 		g.Go(func() error {
 			for chunks := range chunkCh {
 				credentials := credential.DetectStealer(chunks)
@@ -162,11 +162,10 @@ func ParseUserInfo(filePath, outputDir string, passwords ...string) ([]*model.Us
 func ParseUserInfoFromFiles(files ...string) ([]*model.UserInformation, error) {
 	results := make([]*model.UserInformation, 0)
 	chunkCh := make(chan []string, 100)
-	maxWorkers := 10
 	g := errgroup.Group{}
-	g.SetLimit(maxWorkers)
+	g.SetLimit(MaxWorkers)
 
-	for range maxWorkers {
+	for range MaxWorkers {
 		g.Go(func() error {
 			for chunks := range chunkCh {
 				userInfos := userinfo.DetectStealer(chunks)
