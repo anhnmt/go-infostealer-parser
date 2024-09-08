@@ -1,6 +1,8 @@
 package parser
 
 import (
+	"sync/atomic"
+
 	"github.com/puzpuzpuz/xsync/v3"
 	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
@@ -12,7 +14,13 @@ import (
 	"github.com/anhnmt/go-infostealer-parser/parser/userinfo"
 )
 
-var MaxWorkers = 5
+const ChunkSize = 100
+
+var MaxWorkers atomic.Int32
+
+func init() {
+	MaxWorkers.Store(5)
+}
 
 type InfoStealer struct {
 	UserInfo    *model.UserInformation
@@ -30,58 +38,45 @@ func Parse(filePath, outputDir string, passwords ...string) (*xsync.MapOf[string
 	}
 
 	results := xsync.NewMapOf[string, *InfoStealer]()
-	chunkCh := make(chan []string, 100)
+	chunkCh := make(chan []string, ChunkSize)
 	g := errgroup.Group{}
-	g.SetLimit(MaxWorkers)
+	maxWorkers := int(MaxWorkers.Load())
+	g.SetLimit(maxWorkers)
 
-	for range MaxWorkers {
+	for range maxWorkers {
 		g.Go(func() error {
 			for chunks := range chunkCh {
 				userInfos := userinfo.DetectStealer(chunks)
 				if len(userInfos) > 0 {
-					groupUserInfos := lo.GroupBy(userInfos, func(userInfo *model.UserInformation) string {
-						return userInfo.OutputDir
-					})
-
-					for group, slice := range groupUserInfos {
-						if len(slice) == 0 {
-							continue
-						}
-
+					for _, userInfo := range userInfos {
+						group := userInfo.OutputDir
 						val, ok := results.Load(group)
 						if !ok {
 							val = &InfoStealer{
-								UserInfo: slice[0],
+								UserInfo: userInfo,
 							}
-							results.Store(group, val)
 						} else {
-							val.UserInfo = slice[0]
-							results.Store(group, val)
+							val.UserInfo = userInfo
 						}
+						results.Store(group, val)
 					}
 				}
 
 				credentials := credential.DetectStealer(chunks)
 				if len(credentials) > 0 {
-					groupCredentials := lo.GroupBy(credentials, func(credential *model.Credential) string {
-						return credential.OutputDir
-					})
-
-					for group, slice := range groupCredentials {
-						if len(slice) == 0 {
-							continue
-						}
-
+					for _, credential := range credentials {
+						group := credential.OutputDir
 						val, ok := results.Load(group)
 						if !ok {
 							val = &InfoStealer{
-								Credentials: slice,
+								Credentials: []*model.Credential{
+									credential,
+								},
 							}
-							results.Store(group, val)
 						} else {
-							val.Credentials = append(val.Credentials, slice...)
-							results.Store(group, val)
+							val.Credentials = append(val.Credentials, credential)
 						}
+						results.Store(group, val)
 					}
 				}
 			}
@@ -90,8 +85,7 @@ func Parse(filePath, outputDir string, passwords ...string) (*xsync.MapOf[string
 		})
 	}
 
-	chunks := lo.Chunk(files, 100)
-	lop.ForEach(chunks, func(chunk []string, _ int) {
+	lop.ForEach(lo.Chunk(files, ChunkSize), func(chunk []string, _ int) {
 		chunkCh <- chunk
 	})
 
@@ -116,27 +110,25 @@ func ParseCredentials(filePath, outputDir string, passwords ...string) ([]*model
 
 func ParseCredentialsFromFiles(files ...string) ([]*model.Credential, error) {
 	results := make([]*model.Credential, 0)
-	chunkCh := make(chan []string, 100)
+	chunkCh := make(chan []string, ChunkSize)
 	g := errgroup.Group{}
-	g.SetLimit(MaxWorkers)
+	maxWorkers := int(MaxWorkers.Load())
+	g.SetLimit(maxWorkers)
 
-	for range MaxWorkers {
+	for range maxWorkers {
 		g.Go(func() error {
 			for chunks := range chunkCh {
 				credentials := credential.DetectStealer(chunks)
-				if len(credentials) == 0 {
-					continue
+				if len(credentials) > 0 {
+					results = append(results, credentials...)
 				}
-
-				results = append(results, credentials...)
 			}
 
 			return nil
 		})
 	}
 
-	chunks := lo.Chunk(files, 100)
-	lop.ForEach(chunks, func(chunk []string, _ int) {
+	lop.ForEach(lo.Chunk(files, ChunkSize), func(chunk []string, _ int) {
 		chunkCh <- chunk
 	})
 
@@ -161,27 +153,25 @@ func ParseUserInfo(filePath, outputDir string, passwords ...string) ([]*model.Us
 
 func ParseUserInfoFromFiles(files ...string) ([]*model.UserInformation, error) {
 	results := make([]*model.UserInformation, 0)
-	chunkCh := make(chan []string, 100)
+	chunkCh := make(chan []string, ChunkSize)
 	g := errgroup.Group{}
-	g.SetLimit(MaxWorkers)
+	maxWorkers := int(MaxWorkers.Load())
+	g.SetLimit(maxWorkers)
 
-	for range MaxWorkers {
+	for range maxWorkers {
 		g.Go(func() error {
 			for chunks := range chunkCh {
 				userInfos := userinfo.DetectStealer(chunks)
-				if len(userInfos) == 0 {
-					continue
+				if len(userInfos) > 0 {
+					results = append(results, userInfos...)
 				}
-
-				results = append(results, userInfos...)
 			}
 
 			return nil
 		})
 	}
 
-	chunks := lo.Chunk(files, 100)
-	lop.ForEach(chunks, func(chunk []string, _ int) {
+	lop.ForEach(lo.Chunk(files, ChunkSize), func(chunk []string, _ int) {
 		chunkCh <- chunk
 	})
 
