@@ -5,7 +5,6 @@ import (
 
 	"github.com/puzpuzpuz/xsync/v3"
 	"github.com/samber/lo"
-	lop "github.com/samber/lo/parallel"
 	"golang.org/x/sync/errgroup"
 
 	"github.com/anhnmt/go-infostealer-parser/parser/credential"
@@ -27,7 +26,7 @@ type InfoStealer struct {
 	Credentials []*model.Credential
 }
 
-func Parse(filePath, outputDir string, passwords ...string) (*xsync.MapOf[string, *InfoStealer], error) {
+func Parser(filePath, outputDir string, passwords ...string) (*xsync.MapOf[string, *InfoStealer], error) {
 	files, err := extract.ExtractFile(filePath, outputDir, passwords...)
 	if err != nil {
 		return nil, err
@@ -85,7 +84,7 @@ func Parse(filePath, outputDir string, passwords ...string) (*xsync.MapOf[string
 		})
 	}
 
-	lop.ForEach(lo.Chunk(files, ChunkSize), func(chunk []string, _ int) {
+	lo.ForEach(lo.Chunk(files, ChunkSize), func(chunk []string, _ int) {
 		chunkCh <- chunk
 	})
 
@@ -128,7 +127,7 @@ func ParseCredentialsFromFiles(files ...string) ([]*model.Credential, error) {
 		})
 	}
 
-	lop.ForEach(lo.Chunk(files, ChunkSize), func(chunk []string, _ int) {
+	lo.ForEach(lo.Chunk(files, ChunkSize), func(chunk []string, _ int) {
 		chunkCh <- chunk
 	})
 
@@ -171,7 +170,7 @@ func ParseUserInfoFromFiles(files ...string) ([]*model.UserInformation, error) {
 		})
 	}
 
-	lop.ForEach(lo.Chunk(files, ChunkSize), func(chunk []string, _ int) {
+	lo.ForEach(lo.Chunk(files, ChunkSize), func(chunk []string, _ int) {
 		chunkCh <- chunk
 	})
 

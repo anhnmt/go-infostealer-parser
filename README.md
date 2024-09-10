@@ -27,6 +27,9 @@ go get -u github.com/anhnmt/go-infostealer-parser
   
     ![MANTICORE.png](docs/images/MANTICORE.png)
 
+- Group Unknown
+  - Stealers that we cannot identify.
+
 ## References
 
 - https://github.com/milxss/universal_stealer_log_parser

@@ -2,6 +2,7 @@ package credential
 
 import (
 	"github.com/anhnmt/go-infostealer-parser/parser/credential/meta"
+	"github.com/anhnmt/go-infostealer-parser/parser/credential/unknown"
 	"github.com/anhnmt/go-infostealer-parser/parser/model"
 	"github.com/anhnmt/go-infostealer-parser/parser/util"
 )
@@ -44,6 +45,12 @@ func DetectStealer(files []string) []*model.Credential {
 				results = append(results, credentials...)
 			}
 			return
+		}
+
+		// Unknown stealer
+		credentials := unknown.ExtractCredentials(file, body)
+		if len(credentials) > 0 {
+			results = append(results, credentials...)
 		}
 	})
 

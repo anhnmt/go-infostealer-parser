@@ -114,7 +114,7 @@ func TestParseUserInfo(t *testing.T) {
 	}
 }
 
-func TestParse(t *testing.T) {
+func TestParser(t *testing.T) {
 	type args struct {
 		filePath  string
 		outputDir string
@@ -134,31 +134,47 @@ func TestParse(t *testing.T) {
 		//     },
 		//     want: 538,
 		// },
+		// {
+		// 	name: "Sample MANTICORECLOUD",
+		// 	args: args{
+		// 		filePath:  "testdata/@MANTICORECLOUD - 06.09 - 3500 PCS.rar",
+		// 		outputDir: "testdata/@MANTICORECLOUD - 06.09 - 3500 PCS",
+		// 	},
+		// 	want: 247100,
+		// },
 		{
-			name: "Sample MANTICORECLOUD",
+			name: "Unknown @DumpsSlivCloud - RED PRIVATE LOGS1",
 			args: args{
-				filePath:  "testdata/@MANTICORECLOUD - 06.09 - 3500 PCS.rar",
-				outputDir: "testdata/@MANTICORECLOUD - 06.09 - 3500 PCS",
+				filePath:  "testdata/@DumpsSlivCloud - RED PRIVATE LOGS1.rar",
+				outputDir: "testdata/@DumpsSlivCloud - RED PRIVATE LOGS1",
 			},
-			want: 247100,
+			want: 1124,
+		},
+		{
+			name: "Unknown @DeathLogsCloud",
+			args: args{
+				filePath:  "testdata/@DeathLogsCloud.rar",
+				outputDir: "testdata/@DeathLogsCloud",
+			},
+			want: 1197,
 		},
 	}
 	for _, tt := range tests {
-		// FOR EXAMPLE, WE REMOVE OLD DATA BEFORE EXTRACT.
-		err := os.RemoveAll(tt.args.outputDir) // BE CAREFUL!
-		if err != nil {
-			t.Errorf("RemoveAll() error = %v", err)
-			return
-		}
-
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := Parse(tt.args.filePath, tt.args.outputDir, tt.args.passwords...)
+			// FOR EXAMPLE, WE REMOVE OLD DATA BEFORE EXTRACT.
+			err := os.RemoveAll(tt.args.outputDir) // BE CAREFUL!
+			if err != nil {
+				t.Errorf("RemoveAll() error = %v", err)
+				return
+			}
+
+			got, err := Parser(tt.args.filePath, tt.args.outputDir, tt.args.passwords...)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("Parse() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("Parser() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if tt.want != got.Size() {
-				t.Errorf("Parse() got = %v, want %v", got.Size(), tt.want)
+				t.Errorf("Parser() got = %v, want %v", got.Size(), tt.want)
 			}
 		})
 	}

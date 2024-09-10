@@ -3,6 +3,7 @@ package userinfo
 import (
 	"github.com/anhnmt/go-infostealer-parser/parser/model"
 	"github.com/anhnmt/go-infostealer-parser/parser/userinfo/meta"
+	"github.com/anhnmt/go-infostealer-parser/parser/userinfo/unknown"
 	"github.com/anhnmt/go-infostealer-parser/parser/util"
 )
 
@@ -40,6 +41,12 @@ func DetectStealer(files []string) []*model.UserInformation {
 				results = append(results, userInfo)
 			}
 			return
+		}
+
+		// Unknown stealer
+		userInfo := unknown.ExtractUserInfo(file, body)
+		if userInfo != nil {
+			results = append(results, userInfo)
 		}
 	})
 
