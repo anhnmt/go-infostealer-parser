@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/anhnmt/go-infostealer-parser/parser/credential/meta"
+	"github.com/anhnmt/go-infostealer-parser/parser/credential/unknown"
 	"github.com/anhnmt/go-infostealer-parser/parser/extract"
 )
 
@@ -26,7 +26,24 @@ func TestExtract(t *testing.T) {
 	// 	t.Fatal(err)
 	// }
 
-	outputDir := "testdata/@BRADMAX 1000 AUG"
+	// outputDir := "testdata/@BRADMAX 1000 AUG"
+	//
+	// // FOR EXAMPLE, WE REMOVE OLD DATA BEFORE EXTRACT.
+	// err := os.RemoveAll(outputDir) // BE CAREFUL!
+	// if err != nil {
+	// 	t.Errorf("RemoveAll() error = %v", err)
+	// 	return
+	// }
+	//
+	// files, err := extract.ExtractFile(
+	// 	"testdata/@BRADMAX 1000 AUG.zip",
+	// 	outputDir,
+	// )
+	// if err != nil {
+	// 	t.Fatal(err)
+	// }
+
+	outputDir := "testdata/CashFlow Premium Cloud #201"
 
 	// FOR EXAMPLE, WE REMOVE OLD DATA BEFORE EXTRACT.
 	err := os.RemoveAll(outputDir) // BE CAREFUL!
@@ -36,7 +53,7 @@ func TestExtract(t *testing.T) {
 	}
 
 	files, err := extract.ExtractFile(
-		"testdata/@BRADMAX 1000 AUG.zip",
+		"testdata/CashFlow Premium Cloud #201.zip",
 		outputDir,
 	)
 	if err != nil {
@@ -79,14 +96,23 @@ func TestExtract(t *testing.T) {
 		//     },
 		//     want: 28017,
 		// },
+		// {
+		// 	name: "Sample @BRADMAX 1000 AUG",
+		// 	args: args{
+		// 		files:     files,
+		// 		fn:        meta.ExtractCredentials,
+		// 		outputDir: outputDir,
+		// 	},
+		// 	want: 76461,
+		// },
 		{
-			name: "Sample @BRADMAX 1000 AUG",
+			name: "Sample CashFlow Premium Cloud #201",
 			args: args{
 				files:     files,
-				fn:        meta.ExtractCredentials,
+				fn:        unknown.ExtractCredentials,
 				outputDir: outputDir,
 			},
-			want: 76461,
+			want: 107082,
 		},
 		// {
 		//     name: "Sample berserklogs",

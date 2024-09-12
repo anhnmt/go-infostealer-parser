@@ -11,20 +11,20 @@ import (
 )
 
 const (
-	URL         = "(URL|url):"
-	Username    = "(Username|username):"
+	URL         = "(URL|url|Host):"
+	Username    = "(Username|username|Login):"
 	Password    = "(Password|password):"
-	Application = "(Application|application):"
+	Application = "(Application|application|Soft):"
 )
 
 // ExtractCredentials extracts Credentials pattern from body
 func ExtractCredentials(filePath, body string) []*model.Credential {
-	entries := strings.Split(body, "===============")
+	entries := GetEntries(body)
 	if len(entries) == 0 {
 		return nil
 	}
 
-	credentials := make([]*model.Credential, 0)
+	credentials := make([]*model.Credential, 0, len(entries))
 	lo.ForEach(entries, func(entry string, _ int) {
 		// Split the entry into individual lines
 		lines := strings.Split(entry, "\n")
@@ -100,4 +100,18 @@ func ExtractCredentials(filePath, body string) []*model.Credential {
 	})
 
 	return credentials
+}
+
+func GetEntries(body string) []string {
+	entries := strings.Split(body, "===============")
+	if len(entries) > 1 {
+		return entries
+	}
+
+	entries = strings.Split(body, "\r\n\r\n")
+	if len(entries) > 1 {
+		return entries
+	}
+
+	return nil
 }

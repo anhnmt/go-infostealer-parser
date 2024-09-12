@@ -5,11 +5,28 @@ import (
 	"testing"
 
 	"github.com/anhnmt/go-infostealer-parser/parser/extract"
-	"github.com/anhnmt/go-infostealer-parser/parser/userinfo/meta"
+	"github.com/anhnmt/go-infostealer-parser/parser/userinfo/unknown"
 )
 
 func TestExtract(t *testing.T) {
-	outputDir := "./testdata/GODELESS CLOUD"
+	// outputDir := "./testdata/GODELESS CLOUD"
+	//
+	// // FOR EXAMPLE, WE REMOVE OLD DATA BEFORE EXTRACT.
+	// err := os.RemoveAll(outputDir) // BE CAREFUL!
+	// if err != nil {
+	//     t.Errorf("RemoveAll() error = %v", err)
+	//     return
+	// }
+	//
+	// files, err := extract.ExtractFile(
+	//     "./testdata/GODELESS CLOUD.rar",
+	//     outputDir,
+	// )
+	// if err != nil {
+	//     t.Fatal(err)
+	// }
+
+	outputDir := "testdata/CashFlow Premium Cloud #201"
 
 	// FOR EXAMPLE, WE REMOVE OLD DATA BEFORE EXTRACT.
 	err := os.RemoveAll(outputDir) // BE CAREFUL!
@@ -19,7 +36,7 @@ func TestExtract(t *testing.T) {
 	}
 
 	files, err := extract.ExtractFile(
-		"./testdata/GODELESS CLOUD.rar",
+		"testdata/CashFlow Premium Cloud #201.zip",
 		outputDir,
 	)
 	if err != nil {
@@ -52,13 +69,21 @@ func TestExtract(t *testing.T) {
 		args args
 		want int
 	}{
+		// {
+		// 	name: "Sample GODELESS CLOUD",
+		// 	args: args{
+		// 		files: files,
+		// 		fn:    meta.ExtractUserInfo,
+		// 	},
+		// 	want: 538,
+		// },
 		{
-			name: "Sample GODELESS CLOUD",
+			name: "Sample CashFlow Premium Cloud #201",
 			args: args{
 				files: files,
-				fn:    meta.ExtractUserInfo,
+				fn:    unknown.ExtractUserInfo,
 			},
-			want: 538,
+			want: 766,
 		},
 		// {
 		//     name: "Sample berserklogs",

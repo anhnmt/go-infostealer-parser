@@ -12,16 +12,16 @@ import (
 )
 
 const (
-	IP           string = "(IP|ip):"
-	FileLocation        = "(FileLocation):"
-	UserName            = "(UserName):"
-	MachineName         = "(MachineName):"
+	IP           string = "(IP|ip|Ip):"
+	FileLocation        = "^(FileLocation|Path):"
+	UserName            = "(UserName|User Name):"
+	MachineName         = "(MachineName|Computer Name):"
 	MachineID           = "(MachineID):"
 	Country             = "(Country):"
 	Location            = "^(Location):"
 	HWID                = "(HWID):"
-	OS                  = "(Operation System):"
-	LogDate             = "(Log date):"
+	OS                  = "(Operation System|Windows):"
+	LogDate             = "(Log date|Local Time):"
 )
 
 // ExtractUserInfo extracts UserInformation pattern from body
@@ -125,6 +125,30 @@ func ExtractUserInfo(filePath, body string) *model.UserInformation {
 			}
 
 			logDate, err = time.Parse("1/2/2006 15:04:05", val)
+			if err == nil {
+				userInfo.LogDate = &logDate
+				return
+			}
+
+			logDate, err = time.Parse("02/1/2006 15:04:05", val)
+			if err == nil {
+				userInfo.LogDate = &logDate
+				return
+			}
+
+			logDate, err = time.Parse("2006/01/_2 15:04:05", val)
+			if err == nil {
+				userInfo.LogDate = &logDate
+				return
+			}
+
+			logDate, err = time.Parse("2006/01/_2 15:4:5", val)
+			if err == nil {
+				userInfo.LogDate = &logDate
+				return
+			}
+
+			logDate, err = time.Parse("2/1/2006 15:4:5", val)
 			if err == nil {
 				userInfo.LogDate = &logDate
 				return

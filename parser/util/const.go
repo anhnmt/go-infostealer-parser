@@ -11,6 +11,7 @@ var Passwords = []string{
 
 var UserInformation = []string{
 	"UserInformation.txt",
+	"information.txt",
 }
 
 const (
