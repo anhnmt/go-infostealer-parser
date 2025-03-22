@@ -20,8 +20,8 @@ func TestParseCredentials(t *testing.T) {
 		{
 			name: "Sample Extract",
 			args: args{
-				filePath:  "testdata/SAMPLE_EXTRACT.zip",
-				outputDir: "testdata/SAMPLE_EXTRACT",
+				filePath:  "../testdata/SAMPLE_EXTRACT.zip",
+				outputDir: "../testdata/SAMPLE_EXTRACT",
 			},
 			want:    3,
 			wantErr: false,
@@ -29,16 +29,16 @@ func TestParseCredentials(t *testing.T) {
 		{
 			name: "Sample GODELESS CLOUD",
 			args: args{
-				filePath:  "testdata/GODELESS CLOUD.rar",
-				outputDir: "testdata/GODELESS CLOUD",
+				filePath:  "../testdata/GODELESS CLOUD.rar",
+				outputDir: "../testdata/GODELESS CLOUD",
 			},
 			want: 29647,
 		},
 		{
 			name: "Sample MANTICORECLOUD",
 			args: args{
-				filePath:  "testdata/@MANTICORECLOUD - 14.08 - 3800 PCS.rar",
-				outputDir: "testdata/@MANTICORECLOUD - 14.08 - 3800 PCS",
+				filePath:  "../testdata/@MANTICORECLOUD - 14.08 - 3800 PCS.rar",
+				outputDir: "../testdata/@MANTICORECLOUD - 14.08 - 3800 PCS",
 			},
 			want: 3783,
 		},
@@ -79,16 +79,16 @@ func TestParseUserInfo(t *testing.T) {
 		{
 			name: "Sample GODELESS CLOUD",
 			args: args{
-				filePath:  "testdata/GODELESS CLOUD.rar",
-				outputDir: "testdata/GODELESS CLOUD",
+				filePath:  "../testdata/GODELESS CLOUD.rar",
+				outputDir: "../testdata/GODELESS CLOUD",
 			},
 			want: 538,
 		},
 		{
 			name: "Sample MANTICORECLOUD",
 			args: args{
-				filePath:  "testdata/@MANTICORECLOUD - 06.09 - 3500 PCS.rar",
-				outputDir: "testdata/@MANTICORECLOUD - 06.09 - 3500 PCS",
+				filePath:  "../testdata/@MANTICORECLOUD - 06.09 - 3500 PCS.rar",
+				outputDir: "../testdata/@MANTICORECLOUD - 06.09 - 3500 PCS",
 			},
 			want: 247100,
 		},
@@ -145,16 +145,16 @@ func TestParser(t *testing.T) {
 		{
 			name: "Unknown @DumpsSlivCloud - RED PRIVATE LOGS1",
 			args: args{
-				filePath:  "testdata/@DumpsSlivCloud - RED PRIVATE LOGS1.rar",
-				outputDir: "testdata/@DumpsSlivCloud - RED PRIVATE LOGS1",
+				filePath:  "../testdata/@DumpsSlivCloud - RED PRIVATE LOGS1.rar",
+				outputDir: "../testdata/@DumpsSlivCloud - RED PRIVATE LOGS1",
 			},
 			want: 1124,
 		},
 		{
 			name: "Unknown @DeathLogsCloud",
 			args: args{
-				filePath:  "testdata/@DeathLogsCloud.rar",
-				outputDir: "testdata/@DeathLogsCloud",
+				filePath:  "../testdata/@DeathLogsCloud.rar",
+				outputDir: "../testdata/@DeathLogsCloud",
 			},
 			want: 1197,
 		},
